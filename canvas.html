@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo de Processo de Demanda - Grupos de Dois (Tamanho Maior)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* Fundo mais branco */
+            display: flex;
+            flex-direction: column; /* Coluna para título e depois o fluxo */
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            padding: 3rem; /* Aumentado o padding geral */
+        }
+        /* Estilo para o título principal */
+        .main-title {
+            color: #2d3748;
+            font-size: 3.2rem; /* Aumentado */
+            font-weight: 800; /* Mais negrito */
+            text-align: center;
+            margin-bottom: 3rem; /* Aumentado */
+            white-space: nowrap; /* Evita quebra de linha em telas menores */
+        }
+        /* Container para uma linha de dois blocos */
+        .row-of-two {
+            display: flex;
+            flex-direction: row;
+            justify-content: center; /* Centraliza os blocos na linha */
+            align-items: stretch; /* Alinha verticalmente os blocos na linha, esticando-os para ter a mesma altura */
+            gap: 2.5rem; /* Aumentado o espaçamento entre os blocos e conectores na mesma linha */
+            margin-bottom: 2.5rem; /* Aumentado o espaçamento entre as linhas de blocos */
+            flex-wrap: wrap; /* Permite que os blocos quebrem para a próxima linha em telas pequenas */
+            max-width: 1200px; /* Limita a largura máxima da linha para melhor visualização */
+            width: 100%;
+        }
+        /* Estilo para os títulos das caixas */
+        .box-title {
+            font-size: 1.6rem; /* Aumentado */
+            font-weight: 700; /* Mais negrito */
+            color: #2c5282;
+            margin-bottom: 1rem; /* Aumentado */
+        }
+        /* Estilo para o texto dentro das caixas */
+        .box-content {
+            color: #4a5568;
+            font-size: 1.1rem; /* Aumentado */
+            line-height: 1.6; /* Espaçamento de linha ajustado */
+        }
+        /* Estilo para as caixas do processo */
+        .process-box {
+            background-color: #ffffff;
+            padding: 1.5rem; /* Aumentado o padding interno */
+            border-radius: 0.75rem;
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 10px -2px rgba(0, 0, 0, 0.05); /* Sombra mais pronunciada */
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease-in-out;
+            min-width: 22rem; /* Aumentado a largura mínima */
+            max-width: 28rem; /* Aumentado a largura máxima */
+            height: auto; /* Altura flexível */
+            flex-shrink: 0;
+            flex-grow: 1;
+        }
+        .process-box:hover {
+            transform: translateY(-8px); /* Efeito de elevação maior */
+        }
+        /* Estilo para listas dentro das caixas */
+        .process-box ul {
+            list-style: disc;
+            margin-left: 1.2rem; /* Ajustado */
+            margin-top: 0.6rem; /* Ajustado */
+        }
+        .process-box ul li {
+            margin-bottom: 0.3rem; /* Ajustado */
+        }
+
+        /* Estilos para o conector horizontal (entre blocos na mesma linha) */
+        .flow-connector-horizontal {
+            position: relative;
+            width: 4rem; /* Aumentado o comprimento da linha */
+            min-width: 4rem;
+            height: 3px; /* Aumentado a largura da linha */
+            background-color: #a0aec0;
+            flex-shrink: 0;
+            align-self: center;
+        }
+        .flow-connector-horizontal::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -0.7rem; /* Ajustado a posição da seta */
+            transform: translateY(-50%) rotate(45deg);
+            width: 1.2rem; /* Aumentado o tamanho da seta */
+            height: 1.2rem; /* Aumentado o tamanho da seta */
+            background-color: #a0aec0;
+            border-top-right-radius: 3px; /* Arredondamento ajustado */
+        }
+
+        /* Estilos para o conector vertical (entre linhas de blocos) */
+        .flow-connector-vertical {
+            position: relative;
+            width: 3px; /* Aumentado a largura da linha */
+            height: 4rem; /* Aumentado a altura da linha */
+            background-color: #a0aec0;
+            margin: 0 auto 2.5rem auto; /* Centraliza horizontalmente e adiciona margem inferior */
+        }
+        /* Removido o ::after para a seta do conector vertical */
+
+        /* Responsividade para telas menores */
+        @media (max-width: 1024px) {
+            .row-of-two {
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .process-box {
+                min-width: 20rem;
+                max-width: 25rem;
+                padding: 1.2rem;
+            }
+            .box-title {
+                font-size: 1.4rem;
+            }
+            .box-content {
+                font-size: 1rem;
+            }
+            .flow-connector-horizontal {
+                width: 3rem;
+                min-width: 3rem;
+            }
+            .flow-connector-vertical {
+                height: 3rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+            .row-of-two {
+                flex-direction: column; /* Em telas pequenas, os blocos ficam em coluna */
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .process-box {
+                min-width: 16rem;
+                max-width: 100%; /* Ocupa a largura total disponível */
+                padding: 1rem;
+            }
+            body {
+                padding: 1rem;
+            }
+            .flow-connector-horizontal {
+                display: none; /* Esconde o conector horizontal em layout de coluna */
+            }
+            .flow-connector-vertical {
+                height: 2rem;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="main-title">Fluxo de Processo de Demanda</h1>
+
+    <div class="row-of-two">
+        <div class="process-box">
+            <h2 class="box-title">1. Recebimento da demanda</h2>
+            <div class="box-content">
+                <p><strong>Ferramenta:</strong> Forms</p>
+                <p><strong>Ação:</strong> Recebimento do forms preenchido</p>
+                <p><strong>Responsável:</strong> Gestor e PO do DataEduca</p>
+            </div>
+        </div>
+        <div class="flow-connector-horizontal"></div>
+        <div class="process-box">
+            <h2 class="box-title">2. Triagem pelo DataEduca</h2>
+            <div class="box-content">
+                <p><strong>Ação:</strong> Avaliar cada demanda com base nos seguintes critérios:</p>
+                <ul>
+                    <li>Clareza e objetivo da demanda</li>
+                    <li>Dados envolvidos (e sua sensibilidade)</li>
+                    <li>Viabilidade técnica</li>
+                    <li>Stakeholders a serem acionados</li>
+                    <li>Risco e impacto</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="flow-connector-vertical"></div>
+
+    <div class="row-of-two">
+        <div class="process-box">
+            <h2 class="box-title">3. Stakeholders e Resp. Técnicos</h2>
+            <div class="box-content">
+                <p><strong>Ação:</strong> Acionar os responsáveis técnicos:</p>
+                <ul>
+                    <li>Dados</li>
+                    <li>TI</li>
+                    <li>Segurança</li>
+                    <li>Área demandante</li>
+                    <li>Redes (quando necessário)</li>
+                    <li>DB (quando necessário)</li>
+                    <li>Parceiro externo (quando necessário)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="flow-connector-horizontal"></div>
+        <div class="process-box">
+            <h2 class="box-title">4. Classificação e Priorização da Demanda</h2>
+            <div class="box-content">
+                <p><strong>Ação:</strong> Classificar e priorizar a demanda utilizando os seguintes critérios:</p>
+                <ul>
+                    <li>Urgência</li>
+                    <li>Impacto</li>
+                    <li>Complexidade</li>
+                    <li>Alinhamento estratégico</li>
+                </ul>
+                <p><strong>Resultado:</strong> A demanda recebe um score ou uma prioridade (Alta / Média / Baixa).</p>
+            </div>
+        </div>
+    </div>
+    <div class="flow-connector-vertical"></div>
+
+    <div class="row-of-two">
+        <div class="process-box">
+            <h2 class="box-title">5. Governança e Artefato</h2>
+            <div class="box-content">
+                <p><strong>Ação:</strong> Registrar todas as decisões, aprovações e responsáveis na Wiki de Governança de IA.</p>
+                <p><strong>Artefato:</strong> Documento detalhado para o solicitando contendo:</p>
+                <ul>
+                    <li>Touchpoints de TI</li>
+                    <li>Dados necessários</li>
+                    <li>Disponibilidade atual dos dados</li>
+                    <li>Demais infos (triagem, prioridade etc)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="flow-connector-horizontal"></div>
+        <div class="process-box">
+            <h2 class="box-title">6. Transparência e acompanhamento</h2>
+            <div class="box-content">
+                <p><strong>Ação:</strong> Gerar relatórios mensais com as seguintes informações:</p>
+                <ul>
+                    <li>Demandas recebidas</li>
+                    <li>Demandas aprovadas / rejeitadas</li>
+                    <li>Status atual das demandas</li>
+                    <li>Impactos entregues</li>
+                    <li>Métricas de geração de valor</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
